@@ -248,3 +248,62 @@ stages:
       hash: md5
       md5: e8dbc5b9a2c45a8aa4da28afc607c074
       size: 70327
+  feast_serve:
+    cmd: python src/feast_serve.py
+    deps:
+    - path: data/processed/test.parquet
+      hash: md5
+      md5: a06044f214ae8af44ab41f7dad6645fe
+      size: 9007
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: d7a659ce1738803029cdecb0d46afd5d
+      size: 16922
+    - path: feature_repo/feature_store.yaml
+      hash: md5
+      md5: caf0328edcceeafd14849e1037aa2380
+      size: 477
+    - path: feature_repo/features.py
+      hash: md5
+      md5: a4cbe81ecba36020d4ac748a769e1c3a
+      size: 1147
+    - path: models/q_table.json
+      hash: md5
+      md5: 5dc8dba0949efad5d839efe2c7625063
+      size: 16629
+    - path: src/feast_serve.py
+      hash: md5
+      md5: ba6585c3d5a562521453ee62064ea6d4
+      size: 4306
+    - path: src/utils.py
+      hash: md5
+      md5: f15efb65ca98201dd814d646aa15c9b7
+      size: 566
+    params:
+      params.yaml:
+        env:
+          actions:
+          - 0
+          - 10
+          - 20
+          - 40
+          stock_bins:
+          - 5
+          - 10
+          - 20
+          - 30
+          - 45
+          - 60
+          - 80
+          capacity: 100
+          initial_stock: 20
+          episode_length: 60
+          price: 5.0
+          order_cost: 2.0
+          holding_cost: 0.3
+          stockout_penalty: 2.0
+    outs:
+    - path: metrics/feast.json
+      hash: md5
+      md5: 442d742aa516938c1a7e0aca7a0597f0
+      size: 296

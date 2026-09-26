@@ -99,18 +99,18 @@ stages:
 # Only uncomment after `pip install -r requirements-feast.txt` works on your PC.
 # To uncomment: delete ONLY the leading "#" on each line below.
 # ---------------------------------------------------------------------------
-#  feast_serve:
-#    cmd: python src/feast_serve.py
-#    deps:
-#      - src/feast_serve.py
-#      - src/utils.py
-#      - feature_repo/features.py
-#      - feature_repo/feature_store.yaml
-#      - data/processed/train.parquet
-#      - data/processed/test.parquet
-#      - models/q_table.json
-#    params:
-#      - env
-#    metrics:
-#      - metrics/feast.json:
-#          cache: false
+  feast_serve:
+    cmd: python src/feast_serve.py
+    deps:
+      - src/feast_serve.py
+      - src/utils.py
+      - feature_repo/features.py
+      - feature_repo/feature_store.yaml
+      - data/processed/train.parquet
+      - data/processed/test.parquet
+      - models/q_table.json
+    params:
+      - env
+    metrics:
+      - metrics/feast.json:
+          cache: false

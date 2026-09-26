@@ -1,0 +1,15 @@
+{
+  "offline_rows_retrieved": 5,
+  "offline_matches_source": true,
+  "online_features": {
+    "store_item_id": 1001,
+    "day_of_week": 6,
+    "rolling_demand": 17.57,
+    "demand_trend": 1
+  },
+  "recommended_order": {
+    "stock_0": 10,
+    "stock_20": 10,
+    "stock_60": 0
+  }
+}
