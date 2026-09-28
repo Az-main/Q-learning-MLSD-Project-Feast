@@ -1,11 +1,10 @@
-# Feast configuration (local mode - everything is files on your PC)
 project: inventory_rl
 provider: local
-registry: data/registry.db          # catalogue of feature definitions (made by `apply`)
-online_store:                        # latest feature values, fast lookup for serving
+registry: data/registry.db
+online_store:
   type: sqlite
   path: data/online_store.db
-offline_store:                       # full history, used to build training data
+offline_store:
   type: file
 entity_key_serialization_version: 3
 auth:

@@ -1,26 +1,4 @@
-"""
-Stage 4 (bonus) - online_drift
-------------------------------
-Replays the STREAM year (2016) one day at a time, like live data arriving.
-
-Online learning (two learners, both updated one sample at a time):
-    * the Q-table keeps learning from every new day  (online reinforcement learning)
-    * a River linear regression predicts each day's demand, then learns from the true value
-
-Drift detection (River ADWIN):
-    * DATA drift    -> ADWIN watches the demand values themselves     (did the input change?)
-    * CONCEPT drift -> ADWIN watches the forecaster's absolute error  (did the input->output
-                       relationship change so the old model is now wrong?)
-
-Response to drift (only if drift.respond is true):
-    retrain the agent on the most recent `retrain_window` days by replaying them
-    `retrain_passes` times in the simulator (the classic "drift -> retrain" loop).
-
-Outputs:
-    metrics/drift.json                -> drift events + online performance
-    metrics/plots/online_rewards.csv  -> day-by-day curve for `dvc plots show`
-    results/online_drift.png          -> reward curve with drift markers
-"""
+"""Run online learning, drift detection and drift response."""
 
 import matplotlib
 matplotlib.use("Agg")
@@ -36,7 +14,7 @@ PROCESSED = ROOT / "data" / "processed"
 
 
 def features(row) -> dict:
-    """Input features for the River forecaster (a plain dict, as River expects)."""
+    """Build one sample for the River forecaster."""
     x = {"rolling_demand": float(row.rolling_demand)}
     for d in range(7):
         x[f"dow_{d}"] = 1.0 if row.day_of_week == d else 0.0
@@ -44,12 +22,7 @@ def features(row) -> dict:
 
 
 def retrain_on_recent(agent, recent: pd.DataFrame, ep: dict, dp: dict) -> None:
-    """Drift response: replay the last few days in the simulator many times.
-
-    The live stream gives only one sample per day, which is far too slow for the
-    Q-table to catch up after a sudden change. Replaying the recent window lets
-    the agent adapt to the NEW demand level quickly.
-    """
+    """Adapt the policy by replaying the most recent stream window."""
     sim = InventoryEnv(recent.reset_index(drop=True), ep)
     agent.alpha, agent.epsilon = dp["retrain_alpha"], dp["retrain_epsilon"]
     for _ in range(dp["retrain_passes"]):
@@ -68,18 +41,15 @@ def main() -> None:
     train = pd.read_parquet(PROCESSED / "train.parquet")
     stream = pd.read_parquet(PROCESSED / "stream.parquet").reset_index(drop=True)
 
-    # ---- the RL agent starts from the trained Q-table ------------------- #
     agent = QLearningAgent(len(ep["actions"]), op["alpha"], params["train"]["gamma"],
                            op["epsilon"], seed=params["train"]["seed"])
     agent.load(ROOT / "models" / "q_table.json")
 
-    # ---- River forecaster: warm it up on the training data, one row at a time
     forecaster = preprocessing.StandardScaler() | linear_model.LinearRegression(
         optimizer=optim.SGD(op["river_lr"]))
     for row in train.itertuples():
         forecaster.learn_one(features(row), row.demand)
 
-    # ---- drift detectors (clock=1 -> check for drift every single day) -- #
     data_detector = drift.ADWIN(delta=dp["adwin_delta"], clock=1)
     concept_detector = drift.ADWIN(delta=dp["adwin_delta"], clock=1)
     mae = metrics.MAE()
@@ -90,20 +60,17 @@ def main() -> None:
     retrain_count = 0
 
     for i, row in enumerate(stream.itertuples()):
-        # 1. agent acts, the day happens, agent learns from it (online Q-learning)
         action = agent.act(state)
         next_state, reward, done, info = env.step(action)
         agent.update(state, action, reward, next_state, done)
         state = next_state
 
-        # 2. forecaster: predict first, then learn (prequential evaluation)
         x, y = features(row), row.demand
         y_pred = forecaster.predict_one(x)
         error = abs(y - y_pred)
         mae.update(y, y_pred)
         forecaster.learn_one(x, y)
 
-        # 3. drift detection
         data_detector.update(y)
         concept_detector.update(error)
         date = row.date.strftime("%Y-%m-%d")
@@ -115,7 +82,6 @@ def main() -> None:
             concept_events.append(date)
             detected = True
 
-        # 4. response: retrain the agent on the most recent days
         if detected and dp["respond"] and i + 1 >= dp["retrain_window"]:
             recent = stream.iloc[i + 1 - dp["retrain_window"]: i + 1]
             retrain_on_recent(agent, recent, ep, dp)
@@ -127,7 +93,6 @@ def main() -> None:
         if done:
             break
 
-    # ---- outputs -------------------------------------------------------- #
     df = pd.DataFrame(log)
     df["rolling_reward"] = df["reward"].rolling(14, min_periods=1).mean().round(2)
     plots = ROOT / "metrics" / "plots"

@@ -2,5 +2,3 @@
     remote = origin
 ['remote "origin"']
     url = https://dagshub.com/Az-main/Q-learning-MLSD-Project-Feast.dvc
-['remote "localremote"']
-    url = D:\dvcstore-feast

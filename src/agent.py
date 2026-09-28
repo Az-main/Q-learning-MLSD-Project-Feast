@@ -1,9 +1,4 @@
-"""
-QLearningAgent - tabular Q-learning with epsilon-greedy exploration.
-
-Q-table size: 8 stock buckets x 7 weekdays x 3 trend levels = 168 states,
-              168 states x 4 actions = 672 numbers.
-"""
+"""Tabular Q-learning agent with epsilon-greedy exploration."""
 
 import numpy as np
 
@@ -16,14 +11,14 @@ class QLearningAgent:
     def __init__(self, n_actions: int, alpha: float, gamma: float,
                  epsilon: float, seed: int = 0):
         self.n_actions = n_actions
-        self.alpha = alpha          # learning rate
-        self.gamma = gamma          # discount factor
-        self.epsilon = epsilon      # exploration probability
+        self.alpha = alpha
+        self.gamma = gamma
+        self.epsilon = epsilon
         self.rng = np.random.default_rng(seed)
         self.q = np.zeros((N_STOCK, N_DOW, N_TREND, n_actions))
 
     def act(self, state: tuple) -> int:
-        """Epsilon-greedy: explore with probability epsilon, otherwise pick the best action."""
+        """Choose an action using the epsilon-greedy policy."""
         if self.rng.random() < self.epsilon:
             return int(self.rng.integers(self.n_actions))
         return int(np.argmax(self.q[state]))
@@ -34,7 +29,6 @@ class QLearningAgent:
         target = r + self.gamma * future
         self.q[s][a] += self.alpha * (target - self.q[s][a])
 
-    # ---- save / load as readable JSON ---------------------------------- #
     def save(self, path, actions) -> None:
         table = {}
         for s in np.ndindex(N_STOCK, N_DOW, N_TREND):
