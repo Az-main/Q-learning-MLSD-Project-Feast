@@ -1,13 +1,4 @@
-"""
-Stage 2 - train
----------------
-Trains the Q-learning agent on random 60-day windows of the TRAIN split.
-
-Outputs:
-    models/q_table.json                  -> the learned policy
-    metrics/train.json                   -> summary of training
-    metrics/plots/training_curve.csv     -> reward per episode (shown by `dvc plots show`)
-"""
+"""Train the Q-learning agent on the training split."""
 
 import numpy as np
 import pandas as pd
@@ -29,7 +20,6 @@ def main() -> None:
 
     history = []
     for episode in range(tp["episodes"]):
-        # linear epsilon decay: explore a lot early, exploit later
         frac = episode / max(1, tp["episodes"] - 1)
         agent.epsilon = tp["epsilon_start"] + frac * (tp["epsilon_end"] - tp["epsilon_start"])
 
@@ -43,7 +33,6 @@ def main() -> None:
             state, total = next_state, total + reward
         history.append({"episode": episode, "total_reward": round(total, 2)})
 
-    # ---- save outputs --------------------------------------------------- #
     agent.save(ROOT / "models" / "q_table.json", ep["actions"])
 
     curve = pd.DataFrame(history)

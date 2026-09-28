@@ -1,15 +1,3 @@
-# dvc.yaml - the pipeline.
-# For each stage DVC records the hash of every `deps`, `params` and `outs` entry in dvc.lock.
-# `dvc repro` reruns a stage only if one of those hashes changed.
-#
-#   data/raw/sales.csv.dvc
-#            |
-#         prepare
-#         /     \
-#     train      |
-#     /   \      |
-# evaluate  online_drift   (bonus: River + drift detection)
-
 stages:
   prepare:
     cmd: python src/prepare.py
@@ -94,11 +82,6 @@ stages:
       - results/online_drift.png:
           cache: false
 
-# ---------------------------------------------------------------------------
-# OPTIONAL bonus stage - Feast feature store.
-# Only uncomment after `pip install -r requirements-feast.txt` works on your PC.
-# To uncomment: delete ONLY the leading "#" on each line below.
-# ---------------------------------------------------------------------------
   feast_serve:
     cmd: python src/feast_serve.py
     deps:

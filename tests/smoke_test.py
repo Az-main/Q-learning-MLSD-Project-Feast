@@ -1,7 +1,4 @@
-"""
-Quick sanity checks. Run after `dvc repro prepare`:
-    python tests/smoke_test.py
-"""
+"""Run basic checks against prepared data and the environment."""
 
 import sys
 from pathlib import Path
@@ -20,7 +17,6 @@ def main() -> None:
     ep = params["env"]
     processed = ROOT / "data" / "processed"
 
-    # 1. prepare produced the three splits, in time order, without gaps in the columns
     splits = {name: pd.read_parquet(processed / f"{name}.parquet")
               for name in ("train", "stream", "test")}
     for name, df in splits.items():
@@ -31,7 +27,6 @@ def main() -> None:
     assert splits["stream"]["date"].max() < splits["test"]["date"].min()
     print("OK  splits:", {k: len(v) for k, v in splits.items()})
 
-    # 2. the environment runs a full episode and states stay inside the Q-table
     env = InventoryEnv(splits["train"], ep)
     agent = QLearningAgent(len(ep["actions"]), 0.1, 0.95, 1.0, seed=0)
     state, done, steps = env.reset(0, ep["episode_length"]), False, 0
@@ -45,7 +40,6 @@ def main() -> None:
     assert steps == ep["episode_length"]
     print("OK  environment episode:", steps, "days")
 
-    # 3. the Q-update actually changed the table
     assert agent.q.any(), "Q-table is still all zeros"
     print("OK  Q-table updated")
     print("All smoke tests passed.")

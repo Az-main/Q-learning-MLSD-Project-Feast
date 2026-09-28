@@ -1,17 +1,4 @@
-"""
-tools/get_data.py
------------------
-Creates data/raw/sales.csv  (columns: date, store, item, sales).
-
-This is NOT a pipeline stage. You run it once, then track the result with `dvc add`.
-
-Option A - real data (Kaggle "Store Item Demand Forecasting Challenge", train.csv):
-    python tools/get_data.py --kaggle path\\to\\train.csv
-    -> keeps only store 1 / item 1 (1,826 rows) so the dataset stays small.
-
-Option B - no Kaggle account? Generate a realistic synthetic series:
-    python tools/get_data.py
-"""
+"""Create the raw sales dataset from Kaggle data or a synthetic series."""
 
 import argparse
 from pathlib import Path
@@ -30,11 +17,11 @@ def from_kaggle(path: str) -> pd.DataFrame:
 
 
 def synthetic(seed: int = 7) -> pd.DataFrame:
-    """Daily sales 2013-2017 with a yearly trend, weekly and annual seasonality, and noise."""
+    """Generate daily sales with trend, seasonality and noise."""
     rng = np.random.default_rng(seed)
     dates = pd.date_range("2013-01-01", "2017-12-31", freq="D")
     t = np.arange(len(dates))
-    trend = 14 + 0.004 * t                                            # slow growth
+    trend = 14 + 0.004 * t
     weekly = np.array([0.8, 0.9, 0.9, 1.0, 1.1, 1.25, 1.3])[dates.dayofweek]
     annual = 1 + 0.25 * np.sin(2 * np.pi * (dates.dayofyear - 80) / 365)
     sales = rng.poisson(trend * weekly * annual)
