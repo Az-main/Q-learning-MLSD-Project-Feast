@@ -12,7 +12,7 @@
     "2016-07-05"
   ],
   "river_forecaster_mae": 6.92,
-  "online_total_reward": 10493.5,
-  "avg_daily_reward_before_drift": 43.84,
-  "avg_daily_reward_after_drift": 13.66
+  "online_total_reward": 16749.6,
+  "avg_daily_reward_before_drift": 51.63,
+  "avg_daily_reward_after_drift": 39.97
 }

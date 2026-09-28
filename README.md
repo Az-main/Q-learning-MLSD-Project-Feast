@@ -115,17 +115,34 @@ and runs only stages affected by a change.
 
 ## Results
 
+### Hyperparameter selection
+
+Nine DVC experiments tested every combination of `alpha` in
+`{0.05, 0.10, 0.20}` and `gamma` in `{0.90, 0.95, 0.99}`. All other settings,
+the chronological data split and seed `42` remained fixed. The selected values
+were `alpha=0.20` and `gamma=0.90` because they produced the highest test
+reward.
+
+| Configuration | Total reward | Service level | Stockout rate |
+|---|---:|---:|---:|
+| Original: `alpha=0.10`, `gamma=0.95` | 18,197.3 | 0.860 | 0.466 |
+| Selected: `alpha=0.20`, `gamma=0.90` | **20,512.0** | **0.947** | **0.162** |
+
+The selected configuration improves test reward by 2,314.7, or 12.7%.
+See the [complete experiment report](experiments/README.md) and
+[raw results](experiments/hyperparameter_results.csv).
+
 ### Policy evaluation
 
 | Policy | Total reward | Service level | Stockout rate | Average leftover |
 |---|---:|---:|---:|---:|
-| Q-learning | **18,197.3** | 0.860 | 0.466 | **3.92** |
+| Q-learning | **20,512.0** | **0.947** | **0.162** | **15.07** |
 | Recent-average order | 16,589.1 | 0.887 | 0.337 | 26.47 |
 | Always order 20 | 15,258.0 | 0.866 | 0.381 | 27.75 |
 | Random | 12,979.6 | 0.813 | 0.268 | 27.28 |
 
-The learned policy achieved the highest reward while keeping less unused
-inventory than the baseline policies.
+The learned policy achieved the highest reward and service level while keeping
+less unused inventory than the recent-average and always-order-20 policies.
 
 ![Policy comparison](results/policy_comparison.png)
 
@@ -133,8 +150,8 @@ inventory than the baseline policies.
 
 | Metric | Response enabled | Response disabled |
 |---|---:|---:|
-| Average daily reward after drift | 51.51 | 13.66 |
-| Online total reward | 17,498.2 | 10,493.5 |
+| Average daily reward after drift | 51.81 | 39.97 |
+| Online total reward | 18,152.5 | 16,749.6 |
 | Retraining events | 3 | 0 |
 
 ![Online drift](results/online_drift_response_true.png)
