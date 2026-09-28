@@ -165,8 +165,8 @@ stages:
       size: 568
     - path: results/policy_comparison.png
       hash: md5
-      md5: 698cdddb295b20c0fc17ee8f149f3fac
-      size: 25422
+      md5: 92cc2175c9051dc929dc1e3028f241b5
+      size: 25441
   online_drift:
     cmd: python src/online_drift.py
     deps:
