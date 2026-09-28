@@ -1,15 +1,26 @@
 prepare:
   store_id: 1
   item_id: 1
-  train_end: "2015-12-31"
-  stream_end: "2016-12-31"
+  train_end: '2015-12-31'
+  stream_end: '2016-12-31'
   rolling_window: 7
-  drift_start: "2016-07-01"
+  drift_start: '2016-07-01'
   drift_factor: 2.0
 
 env:
-  actions: [0, 10, 20, 40]
-  stock_bins: [5, 10, 20, 30, 45, 60, 80]
+  actions:
+  - 0
+  - 10
+  - 20
+  - 40
+  stock_bins:
+  - 5
+  - 10
+  - 20
+  - 30
+  - 45
+  - 60
+  - 80
   capacity: 100
   initial_stock: 20
   episode_length: 60
@@ -20,7 +31,7 @@ env:
 
 train:
   alpha: 0.1
-  gamma: 0.95
+  gamma: 0.9
   epsilon_start: 1.0
   epsilon_end: 0.05
   episodes: 600

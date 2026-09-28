@@ -90,7 +90,7 @@ stages:
           stockout_penalty: 2.0
         train:
           alpha: 0.1
-          gamma: 0.95
+          gamma: 0.9
           epsilon_start: 1.0
           epsilon_end: 0.05
           episodes: 600
@@ -98,16 +98,16 @@ stages:
     outs:
     - path: metrics/plots/training_curve.csv
       hash: md5
-      md5: 7fd9e75bea2626609413393bf3264dba
+      md5: 248e4f363248886e31139627676347e8
       size: 7103
     - path: metrics/train.json
       hash: md5
-      md5: de5edc455de6747aba91828cf7651373
-      size: 110
+      md5: 151989503b249d5d541ff301743cab2b
+      size: 109
     - path: models/q_table.json
       hash: md5
-      md5: 5dc8dba0949efad5d839efe2c7625063
-      size: 16629
+      md5: ab2c767b3b9753abb244015a732e0171
+      size: 16559
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -117,8 +117,8 @@ stages:
       size: 9007
     - path: models/q_table.json
       hash: md5
-      md5: 5dc8dba0949efad5d839efe2c7625063
-      size: 16629
+      md5: ab2c767b3b9753abb244015a732e0171
+      size: 16559
     - path: src/agent.py
       hash: md5
       md5: 25162173b32b97aaca9430bb76ed7ff3
@@ -161,12 +161,12 @@ stages:
     outs:
     - path: metrics/eval.json
       hash: md5
-      md5: 403965d5d5cdf886f85e5a6ec7c6c36a
-      size: 568
+      md5: 3a9e79ffbbe7fd9d658786d304b05d86
+      size: 569
     - path: results/policy_comparison.png
       hash: md5
-      md5: 698cdddb295b20c0fc17ee8f149f3fac
-      size: 25422
+      md5: 3ba58e2ba9a37450fc31e60dac01d8fe
+      size: 25461
   online_drift:
     cmd: python src/online_drift.py
     deps:
