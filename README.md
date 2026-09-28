@@ -88,7 +88,6 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-python -m pip install -r requirements-feast.txt
 ```
 
 For a private DagsHub repository, configure your own credentials locally:

@@ -7,9 +7,9 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from agent import QLearningAgent          # noqa: E402
-from env import InventoryEnv              # noqa: E402
-from utils import ROOT, load_params       # noqa: E402
+from agent import QLearningAgent
+from env import InventoryEnv
+from utils import ROOT, load_params
 
 
 def main() -> None:

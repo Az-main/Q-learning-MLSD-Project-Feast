@@ -38,7 +38,6 @@ class InventoryEnv:
                   - p["holding_cost"] * leftover
                   - p["stockout_penalty"] * unmet)
 
-        # Orders arrive overnight.
         self.stock = min(p["capacity"], leftover + order)
         self.t += 1
         done = self.t >= self.end

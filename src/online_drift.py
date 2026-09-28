@@ -65,7 +65,6 @@ def main() -> None:
         agent.update(state, action, reward, next_state, done)
         state = next_state
 
-        # Predict before learning from the same observation.
         x, y = features(row), row.demand
         y_pred = forecaster.predict_one(x)
         error = abs(y - y_pred)

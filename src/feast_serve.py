@@ -10,7 +10,7 @@ from utils import ROOT, load_params, save_json
 
 REPO = ROOT / "feature_repo"
 sys.path.insert(0, str(REPO))
-from features import demand_features, demand_source, store_item  # noqa: E402
+from features import demand_features, demand_source, store_item
 
 FEATURES = ["demand_features:day_of_week",
             "demand_features:rolling_demand",

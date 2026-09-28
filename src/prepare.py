@@ -19,13 +19,11 @@ def main() -> None:
 
     df["day_of_week"] = df["date"].dt.dayofweek
     w = p["rolling_window"]
-    # Use only demand known before the current day.
     original_rolling = df["demand"].shift(1).rolling(w).mean()
 
     in_drift = (df["date"] >= p["drift_start"]) & (df["date"] <= p["stream_end"])
     df.loc[in_drift, "demand"] = (df.loc[in_drift, "demand"] * p["drift_factor"]).round()
     drifted_rolling = df["demand"].shift(1).rolling(w).mean()
-    # Keep simulated drift out of the final test year.
     is_test = df["date"] > p["stream_end"]
     df["rolling_demand"] = drifted_rolling.where(~is_test, original_rolling)
     df = df.dropna().reset_index(drop=True)
