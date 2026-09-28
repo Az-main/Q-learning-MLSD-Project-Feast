@@ -1,9 +1,9 @@
 {
   "q_learning": {
-    "total_reward": 18197.3,
-    "service_level": 0.86,
-    "stockout_rate": 0.466,
-    "avg_leftover": 3.92
+    "total_reward": 20512.0,
+    "service_level": 0.947,
+    "stockout_rate": 0.162,
+    "avg_leftover": 15.07
   },
   "random": {
     "total_reward": 12979.6,
