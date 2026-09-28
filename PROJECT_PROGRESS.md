@@ -1,6 +1,6 @@
 # MLSD DVC Project - Progress and Remaining Plan
 
-Last updated: 2026-09-27
+Last updated: 2026-09-28
 
 ## 1. Project Summary
 
@@ -11,12 +11,16 @@ units a shop should order each day.
 DVC manages the data, model, parameters, metrics, plots, and pipeline so the
 complete experiment can be reproduced on another computer.
 
+
 Project locations:
 
-- GitHub: `https://github.com/Az-main/Q-learning-MLSD-Project`
-- DagsHub: `https://dagshub.com/Az-main/Q-learning-MLSD-Project`
-- Stable project folder: `D:\DVC Project`
-- Isolated Feast workspace: `D:\DVC Project Feast`
+- Feast GitHub: `https://github.com/Az-main/Q-learning-MLSD-Project-Feast`
+- Feast DagsHub: `https://dagshub.com/Az-main/Q-learning-MLSD-Project-Feast`
+- Feast workspace: `D:\DVC Project Feast`
+- Feast local DVC backup: `D:\dvcstore-feast`
+- Original mandatory GitHub: `https://github.com/Az-main/Q-learning-MLSD-Project`
+- Original mandatory DagsHub: `https://dagshub.com/Az-main/Q-learning-MLSD-Project`
+- Original stable folder: `D:\DVC Project`
 - Friend's laptop clone: `D:\MLSD\Q-learning-MLSD-Project`
 
 ## 2. Dataset and Model
@@ -109,8 +113,8 @@ dvc plots show
 Current DVC remote arrangement:
 
 ```text
-localremote -> D:\dvcstore
-origin      -> DagsHub DVC storage (default)
+localremote -> D:\dvcstore-feast
+origin      -> https://dagshub.com/Az-main/Q-learning-MLSD-Project-Feast.dvc
 ```
 
 ### Main Pipeline
@@ -320,18 +324,22 @@ Avoid editing the same files on both computers at the same time.
 ## 8. Current Overall Status
 
 - Mandatory project requirements: complete
-- GitHub and DagsHub setup: complete
-- Reproduction on the friend's laptop: complete
+- Original GitHub and DagsHub setup: complete
+- Original project reproduction on the friend's laptop: complete
 - Multi-user collaboration test: complete
 - Q-learning pipeline: complete
 - River online learning bonus: complete
 - Drift detection and response bonus: complete
 - Separate drift comparison evidence: complete
 - Feast feature-store bonus: complete
-- Final branch commit and merge: remaining
-- Final reproducibility verification: remaining
+- Separate Feast GitHub repository: complete
+- Separate Feast DagsHub storage: complete
+- Separate Feast local backup: complete
+- Final Feast reproducibility verification: remaining
+- Friend collaboration setup for Feast repository: remaining
 - Viva and presentation practice: remaining
 
-The implementation work is complete. The remaining work is to commit and merge
-the Feast branch, perform the final checks on both computers, and prepare the
-viva demonstration and presentation.
+The mandatory project and the Feast-enhanced project are stored independently.
+The implementation and repository separation are complete. The remaining work
+is final reproducibility verification, collaborator setup, viva practice, and
+presentation preparation.

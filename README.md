@@ -1,4 +1,4 @@
-# Inventory Restocking Agent - DS-4491 MLSD Project
+# Inventory Restocking Agent - Feast Edition
 
 A tabular Q-learning agent that decides how much stock to reorder each day,
 built as a reproducible DVC pipeline. Bonus components include River online
@@ -75,8 +75,8 @@ PowerShell.
 ### 1. Clone and create the environment
 
 ```powershell
-git clone https://github.com/Az-main/Q-learning-MLSD-Project.git
-cd Q-learning-MLSD-Project
+git clone https://github.com/Az-main/Q-learning-MLSD-Project-Feast.git
+cd Q-learning-MLSD-Project-Feast
 
 py -3.11 -m venv .venv
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
